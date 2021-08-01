@@ -252,10 +252,10 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   void funcSaveNote()async{
     int untitledCount=await widget.dbHelper.getUntitledCount();
     if((_noteDataEditingController.text.length>=1) && (_noteTitleEditingController.text.length==0)){
-      widget.dbHelper.add(uuid.v1(),"Untitled $untitledCount",_noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,DateTime.now().millisecondsSinceEpoch,noteColorName,isPinnedValue,isArchiveValue);
+      widget.dbHelper.add(uuid.v1(),"Untitled ${untitledCount+1}",_noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,DateTime.now().millisecondsSinceEpoch,noteColorName,isPinnedValue,isArchiveValue,"none");
     }
     if((_noteDataEditingController.text.length>=1) && (_noteTitleEditingController.text.length!=0)){
-      widget.dbHelper.add(uuid.v1(),_noteTitleEditingController.text, _noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,DateTime.now().millisecondsSinceEpoch,noteColorName,isPinnedValue,isArchiveValue);
+      widget.dbHelper.add(uuid.v1(),_noteTitleEditingController.text, _noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,DateTime.now().millisecondsSinceEpoch,noteColorName,isPinnedValue,isArchiveValue,"none");
     }
     Navigator.pop(context);
   }
@@ -268,7 +268,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   Future<bool> _willPopCallback() async {
     // await showDialog or Show add banners or whatever
     // then
-    widget.dbHelper.add(uuid.v1(),_noteTitleEditingController.text,_noteDataEditingController.text, DateTime.now().millisecondsSinceEpoch,DateTime.now().millisecondsSinceEpoch,noteColor.value.toString(),isPinnedValue, isArchiveValue);
+    widget.dbHelper.add(uuid.v1(),_noteTitleEditingController.text,_noteDataEditingController.text, DateTime.now().millisecondsSinceEpoch,DateTime.now().millisecondsSinceEpoch,noteColor.value.toString(),isPinnedValue, isArchiveValue,"none");
     widget.callback;
     return true; // return true if the route to be popped
   }

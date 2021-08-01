@@ -24,9 +24,10 @@ class DBHelper {
   String noteDataField='noteData';
   String updateTimeField='updateTime';
   String createTimeField='createTime';
-  String colorField='color';
+  String colorField='noteColor';
   String isPinnedField='isPinned';
   String isArchiveField='isArchive';
+  String tagField='tag';
 
 
 
@@ -56,7 +57,8 @@ class DBHelper {
   $createTimeField integer,
   $colorField text,
   $isPinnedField integer,
-  $isArchiveField integer
+  $isArchiveField integer,
+  $tagField text
   )
 ''');
     print('Notes table created');
@@ -70,12 +72,13 @@ class DBHelper {
       int createTime,
       String color,
       int isPinned,
-      int isArchive
+      int isArchive,
+      String tag
       ) async {
     var dbClient = await db;
     await dbClient.rawInsert(
-        'INSERT INTO $notesTableName($notesIdField,$noteTitleField,$noteDataField,$updateTimeField,$createTimeField,$colorField,$isPinnedField,$isArchiveField) VALUES(?,?,?,?,?,?,?,?)', [
-      notesId,noteTitle,noteData,updateTime,createTime,color,isPinned,isArchive
+        'INSERT INTO $notesTableName($notesIdField,$noteTitleField,$noteDataField,$updateTimeField,$createTimeField,$colorField,$isPinnedField,$isArchiveField,$tagField) VALUES(?,?,?,?,?,?,?,?,?)', [
+      notesId,noteTitle,noteData,updateTime,createTime,color,isPinned,isArchive,tag
     ]
     );
     print('Note added');
@@ -89,17 +92,18 @@ class DBHelper {
       int updateTime,
       String color,
       int isPinned,
-      int isArchive
+      int isArchive,
+      String tag
       ) async {
     print("This is running");
     var dbClient = await db;
     var result=await dbClient.rawUpdate(
         '''
       UPDATE $notesTableName
-      SET $noteTitleField=?,$noteDataField=?,$updateTimeField=?,$colorField=?,$isPinnedField=?,$isArchiveField=?
+      SET $noteTitleField=?,$noteDataField=?,$updateTimeField=?,$colorField=?,$isPinnedField=?,$isArchiveField=?,$tagField=?
       WHERE $notesIdField=?
       ''',[
-      noteTitle,noteData,updateTime,color,isPinned,isArchive,notesId
+      noteTitle,noteData,updateTime,color,isPinned,isArchive,tag,notesId
     ]
     );
     print('Note Updated');

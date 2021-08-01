@@ -43,14 +43,16 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: color_list.appbackgroundColorDark,
+      //backgroundColor: color_list.appbackgroundColorDark,
+      backgroundColor: color_list.kNoteColorsMap[widget.note['noteColor']],
       appBar: AppBar(
-        backgroundColor: color_list.appbackgroundColorDark,
+        //backgroundColor: color_list.appbackgroundColorDark,
+        backgroundColor: color_list.kNoteColorsMap[widget.note['noteColor']],
         title: Text(""),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: ()async{
-            widget.dbHelper.updateNote(widget.note['notesId'],_noteTitleEditingController.text, _noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,color,isPinned,isArchive).whenComplete(() => Navigator.pop(context));
+            widget.dbHelper.updateNote(widget.note['notesId'],_noteTitleEditingController.text, _noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,color,isPinned,isArchive,"none").whenComplete(() => Navigator.pop(context));
           },
         ),
         actions: [
@@ -68,7 +70,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
               child: Text("Save"),
             ),
             onTap: ()async{
-              result=await widget.dbHelper.updateNote(widget.note['notesId'],_noteTitleEditingController.text, _noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,color,isPinned,isArchive);
+              result=await widget.dbHelper.updateNote(widget.note['notesId'],_noteTitleEditingController.text, _noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,color,isPinned,isArchive,"none");
               print(result);
               Navigator.pop(context);
             },
@@ -95,14 +97,14 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                       border: InputBorder.none,
                       hintText: "Title",
                       hintStyle: TextStyle(color: Colors.grey),
-                      fillColor: color_list.appbackgroundColorDark
+                      fillColor: color_list.kNoteColorsMap[widget.note['noteColor']]
                   ),
                 ),
               ),
               Container(
                 height: 30,
                 alignment: Alignment.centerLeft,
-                color: color_list.appbackgroundColorDark,
+                color: color_list.kNoteColorsMap[widget.note['noteColor']],
                 width: double.infinity,
                 child: Text("Sun,10:24 | 4096 characters",style: TextStyle(color: Colors.grey),),
               ),
@@ -122,7 +124,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                     hoverColor: color_list.appbackgroundColorDark,
                     border: InputBorder.none,
                     filled: true,
-                    fillColor: color_list.appbackgroundColorDark,
+                    fillColor: color_list.kNoteColorsMap[widget.note['noteColor']],
                     hintText: 'Take a note...',
                     hintStyle: TextStyle(color: Colors.grey),
 
@@ -135,7 +137,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
       ),
       bottomNavigationBar: Container(
         height: 80,
-        color: color_list.appbackgroundColorDark,
+        color: color_list.kNoteColorsMap[widget.note['noteColor']],
         padding: const EdgeInsets.symmetric(horizontal: 9),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

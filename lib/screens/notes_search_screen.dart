@@ -12,7 +12,6 @@ class _NotesSearchScreenState extends State<NotesSearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
     );
   }
 }
