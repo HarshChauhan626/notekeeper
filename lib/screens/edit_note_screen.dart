@@ -24,7 +24,8 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
 
   int isPinned;
   int isArchive;
-  String color;
+  String noteColorName;
+  Color noteColor;
   int result;
 
   @override
@@ -36,23 +37,26 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
     isArchive=widget.note['isArchive'];
     _noteTitleEditingController.text=widget.note['noteTitle'];
     _noteDataEditingController.text=widget.note['noteData'];
-    color=widget.note['color'];
+    noteColorName=widget.note['noteColor'];
+    print(noteColorName);
+    noteColor=widget.note['noteColor']=="default"?color_list.appbackgroundColorDark:color_list.kNoteColorsMap[widget.note['noteColor']];
   }
 
 
   @override
   Widget build(BuildContext context) {
+    print(widget.note['noteColor']);
     return Scaffold(
       //backgroundColor: color_list.appbackgroundColorDark,
-      backgroundColor: color_list.kNoteColorsMap[widget.note['noteColor']],
+      backgroundColor: noteColor,
       appBar: AppBar(
         //backgroundColor: color_list.appbackgroundColorDark,
-        backgroundColor: color_list.kNoteColorsMap[widget.note['noteColor']],
+        backgroundColor: noteColor,
         title: Text(""),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: ()async{
-            widget.dbHelper.updateNote(widget.note['notesId'],_noteTitleEditingController.text, _noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,color,isPinned,isArchive,"none").whenComplete(() => Navigator.pop(context));
+            widget.dbHelper.updateNote(widget.note['notesId'],_noteTitleEditingController.text, _noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,noteColorName,isPinned,isArchive,"none").whenComplete(() => Navigator.pop(context));
           },
         ),
         actions: [
@@ -70,7 +74,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
               child: Text("Save"),
             ),
             onTap: ()async{
-              result=await widget.dbHelper.updateNote(widget.note['notesId'],_noteTitleEditingController.text, _noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,color,isPinned,isArchive,"none");
+              result=await widget.dbHelper.updateNote(widget.note['notesId'],_noteTitleEditingController.text, _noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,noteColorName,isPinned,isArchive,"none");
               print(result);
               Navigator.pop(context);
             },
@@ -127,7 +131,6 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                     fillColor: color_list.kNoteColorsMap[widget.note['noteColor']],
                     hintText: 'Take a note...',
                     hintStyle: TextStyle(color: Colors.grey),
-
                   ),
                 ),
               ),
@@ -137,7 +140,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
       ),
       bottomNavigationBar: Container(
         height: 80,
-        color: color_list.kNoteColorsMap[widget.note['noteColor']],
+        color: noteColor,
         padding: const EdgeInsets.symmetric(horizontal: 9),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -152,7 +155,52 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
               icon: const Icon(Icons.more_vert),
               color: Colors.grey,
               onPressed: () => {
-
+                showModalBottomSheet(
+                    context: context,
+                    backgroundColor: color_list.appbackgroundColorDark,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(30),
+                      ),
+                    ),
+                    builder: (context){
+                      return Container(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                                height: 40,
+                                color: color_list.appbackgroundColorDark,
+                                child:colorContainerList()
+                            ),
+                            ListTile(
+                              leading: new Icon(Icons.photo,color: Colors.white,),
+                              title: new Text(
+                                'Photo',
+                                style: TextStyle(
+                                    color: Colors.white
+                                ),
+                              ),
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                            ListTile(
+                              leading: new Icon(Icons.music_note,color: Colors.white,),
+                              title: new Text(
+                                'Music',
+                                style: TextStyle(
+                                    color: Colors.white
+                                ),
+                              ),
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    })
               },
             ),
           ],
@@ -160,6 +208,37 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
       ),
     );
   }
+
+
+
+  Widget colorContainerList(){
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: color_list.kNoteColors.length,
+        itemBuilder: (context,index){
+          return GestureDetector(
+            onTap: (){
+              setState(() {
+                noteColor=color_list.kNoteColorsMap[color_list.kNoteColors[index]];
+                noteColorName=color_list.kNoteColors[index];
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4,vertical: 4),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(34),
+                child: Container(
+                  height: 34,
+                  width: 34,
+                  color: color_list.kNoteColorsMap[color_list.kNoteColors[index]],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+  
+  
 }
 
 

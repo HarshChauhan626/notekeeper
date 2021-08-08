@@ -7,9 +7,11 @@ import 'package:notekeeper/screens/add_note_screen.dart';
 import 'package:notekeeper/screens/edit_note_screen.dart';
 import 'package:notekeeper/screens/filter_screen.dart';
 import 'package:notekeeper/utils/colors_list.dart' as color_list;
-import 'package:notekeeper/widgets/notes_card.dart';
+import 'package:notekeeper/widgets/custom_fab_widget.dart';
+import 'package:notekeeper/widgets/note_grid_card.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:notekeeper/utils/textstyle_list.dart' as text_style;
+import 'package:animations/animations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -19,6 +21,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  final transitionType = ContainerTransitionType.fade;
 
   DBHelper dbHelper;
   var scaffoldKey = GlobalKey<ScaffoldState>();
@@ -109,6 +113,11 @@ class _HomePageState extends State<HomePage> {
                     width: 180,
                     child: TextField(
                       controller: _searchEditingController,
+                      onChanged: (text){
+                        setState(() {
+
+                        });
+                      },
                       style: text_style.whiteContentStyle,
                       cursorColor: Colors.blueGrey,
                       decoration: InputDecoration(
@@ -168,7 +177,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: () async{
           await Navigator.push(context, MaterialPageRoute(
               builder: (BuildContext context)=>AddNoteScreen(
@@ -185,6 +194,14 @@ class _HomePageState extends State<HomePage> {
           });
         },
         child: Icon(Icons.add,size: 40,),
+      ),*/
+      floatingActionButton: CustomFABWidget(
+        dbHelper: dbHelper,
+        transitionType: transitionType,
+        callback:(){
+          setState(() {
+          });
+        },
       ),
     );
   }
@@ -196,7 +213,8 @@ class _HomePageState extends State<HomePage> {
         crossAxisCount: 4,
         itemCount: data.length,
         itemBuilder:(context,index){
-          return GestureDetector(
+          print(data[0]);
+          /*return GestureDetector(
             onTap: ()async{
               await Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => EditNoteScreen(
@@ -206,13 +224,25 @@ class _HomePageState extends State<HomePage> {
               ));
 
               setState(() {
-
               });
 
             },
-            child: NotesCard(
+            child: NoteGridCard(
               index:index,
               note:data[index]
+            ),
+          );*/
+          return OpenContainer(
+            transitionType: transitionType,
+            transitionDuration: Duration(milliseconds:400),
+            openBuilder: (context, _) {
+              return EditNoteScreen(note: data[index],dbHelper: dbHelper);
+            },
+            closedColor: color_list.appbackgroundColorDark,
+            closedBuilder: (context, VoidCallback openContainer) => NoteGridCard(
+              index: index,
+              onClicked: openContainer,
+              note: data[index],
             ),
           );
         },
@@ -236,10 +266,6 @@ class _HomePageState extends State<HomePage> {
       );
     });
   }
-
-
-
-
 
 
 }
