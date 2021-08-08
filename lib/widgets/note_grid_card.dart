@@ -15,12 +15,13 @@ class NotesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(note['noteColor']);
     final minHeight = getMinHeight(index);
     return Card(
       color: color_list.appbackgroundColorDark,
       child: Container(
         decoration: BoxDecoration(
-          color: note['Color']=="default"?color_list.containerColor:color_list.kNoteColorsMap[note['color']],
+          color: note['noteColor']=="default"?color_list.containerColor:color_list.kNoteColorsMap[note['noteColor']],
           borderRadius: BorderRadius.circular(10)
         ),
         padding: EdgeInsets.all(8),
