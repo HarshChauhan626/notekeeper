@@ -5,7 +5,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:notekeeper/helper/notes_db_helper.dart';
 import 'package:notekeeper/screens/add_note_screen.dart';
 import 'package:notekeeper/screens/edit_note_screen.dart';
-import 'package:notekeeper/screens/filter_screen.dart';
+import 'package:notekeeper/screens/notes_search_screen.dart';
 import 'package:notekeeper/utils/colors_list.dart' as color_list;
 import 'package:notekeeper/widgets/custom_fab_widget.dart';
 import 'package:notekeeper/widgets/note_grid_card.dart';
@@ -13,14 +13,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:notekeeper/utils/textstyle_list.dart' as text_style;
 import 'package:animations/animations.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeScreenState extends State<HomeScreen> {
 
   final transitionType = ContainerTransitionType.fade;
 
@@ -143,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                     child: InkWell(
                       child: Icon(Icons.filter_list,color: Colors.white,),
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>FilterScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>NotesSearchScreen()));
                       },
                     ),
                   )
