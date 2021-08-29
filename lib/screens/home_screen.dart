@@ -29,8 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController _searchEditingController=TextEditingController();
   bool isGrid=true;
   
-  
-  
+
   @override
   void initState() {
     // TODO: implement initState
