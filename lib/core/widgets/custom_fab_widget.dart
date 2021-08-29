@@ -10,14 +10,21 @@ import 'package:notekeeper/ui/screens/add_edit_screen/add_note_screen.dart';
 const double fabSize = 56;
 
 class CustomFABWidget extends StatelessWidget {
-  const CustomFABWidget({
+
+  VoidCallback callback;
+
+
+  CustomFABWidget({
     Key key,
+    this.callback
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => OpenContainer(
     transitionDuration: Duration(milliseconds: 400),
-    openBuilder: (context, _) => AddNoteScreen(),
+    openBuilder: (context, _) => AddNoteScreen(
+      voidCallBack: this.callback,
+    ),
     closedShape: CircleBorder(),
     closedColor: Theme.of(context).primaryColor,
     closedBuilder: (context, openContainer) => Container(

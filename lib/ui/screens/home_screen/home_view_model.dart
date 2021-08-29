@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:notekeeper/core/helper/notes_db_helper.dart';
+import 'package:notekeeper/core/service_locator.dart';
 import 'package:notekeeper/main.dart';
 
 
 class HomeViewModel extends ChangeNotifier{
-  DBHelper dbHelper=getItInstance.get<DBHelper>();
+  DBHelper dbHelper=serviceLocator.get<DBHelper>();
   List<Map<String,dynamic>> notesList=[];
+
   bool isGrid = true;
+
   List<String> listOfSorting=[
     'TITLE ASC',
     'TITLE DESC',
@@ -37,6 +40,11 @@ class HomeViewModel extends ChangeNotifier{
 
   Future<void> chooseSortingType(String choice)async{
     selectedSorting=choice;
+    notifyListeners();
+  }
+
+  Future refreshNoteList() async {
+    await fetchInitialList();
     notifyListeners();
   }
 

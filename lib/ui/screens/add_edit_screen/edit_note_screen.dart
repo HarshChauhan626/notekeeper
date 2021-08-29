@@ -1,10 +1,13 @@
 // @dart=2.9
 
 import 'package:notekeeper/core/helper/notes_db_helper.dart';
+import 'package:notekeeper/core/service_locator.dart';
 import 'package:notekeeper/main.dart';
 import 'package:notekeeper/core/utils/colors_list.dart' as color_list;
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+
+
 
 class EditNoteScreen extends StatefulWidget {
   Map<String,dynamic> note;
@@ -35,7 +38,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    dbHelper=getItInstance.get<DBHelper>();
+    dbHelper=serviceLocator<DBHelper>();
     //uuid=widget.note['notesId'];
     isPinned=widget.note['isPinned'];
     isArchive=widget.note['isArchive'];

@@ -1,0 +1,4 @@
+enum AddEdit {
+  Add,
+  Edit
+}

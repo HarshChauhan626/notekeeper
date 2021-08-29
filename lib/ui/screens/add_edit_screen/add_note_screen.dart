@@ -1,6 +1,7 @@
 // @dart=2.9
 
 import 'package:notekeeper/core/helper/notes_db_helper.dart';
+import 'package:notekeeper/core/service_locator.dart';
 import 'package:notekeeper/main.dart';
 import 'package:notekeeper/core/utils/colors_list.dart' as color_list;
 import 'package:flutter/material.dart';
@@ -8,7 +9,11 @@ import 'package:uuid/uuid.dart';
 import 'package:notekeeper/core/utils/textstyle_list.dart' as text_style;
 
 class AddNoteScreen extends StatefulWidget {
-  AddNoteScreen({Key key});
+  VoidCallback voidCallBack;
+  AddNoteScreen({
+    Key key,
+    this.voidCallBack
+  });
 
   @override
   _AddNoteScreenState createState() => _AddNoteScreenState();
@@ -20,7 +25,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   TextEditingController _noteDataEditingController=TextEditingController();
 
 
-  DBHelper dbHelper=getItInstance.get<DBHelper>();
+  DBHelper dbHelper=serviceLocator.get<DBHelper>();
 
 
   int titleMaxLines=10;
@@ -296,6 +301,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     if((_noteDataEditingController.text.length>=1) && (_noteTitleEditingController.text.length!=0)){
       dbHelper.add(uuid.v1(),_noteTitleEditingController.text, _noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,DateTime.now().millisecondsSinceEpoch,noteColorName,isPinnedValue,isArchiveValue,"none");
     }
+    this.widget.voidCallBack();
     Navigator.pop(context);
   }
 
