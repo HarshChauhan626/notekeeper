@@ -2,10 +2,20 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:notekeeper/screens/home_screen.dart';
-import 'package:notekeeper/screens/splash_screen.dart';
+import 'package:get_it/get_it.dart';
+import 'package:notekeeper/core/helper/notes_db_helper.dart';
+import 'package:notekeeper/ui/screens/home_screen/home_screen.dart';
+import 'package:notekeeper/ui/screens/splash_screen.dart';
+import 'package:notekeeper/ui/screens/home_screen/home_view_model.dart';
+
+
+GetIt getItInstance = GetIt.instance;
+
+
 
 void main() {
+  getItInstance.registerSingleton<DBHelper>(DBHelper(notesTableName: "notesTable"));
+  getItInstance.registerSingleton<HomeViewModel>(HomeViewModel());
   runApp(MyApp());
 }
 

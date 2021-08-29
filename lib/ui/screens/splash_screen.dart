@@ -5,7 +5,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:notekeeper/screens/home_screen.dart';
+import 'package:notekeeper/ui/screens/home_screen/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override

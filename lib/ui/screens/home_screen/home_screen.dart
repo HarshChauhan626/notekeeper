@@ -2,15 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:notekeeper/helper/notes_db_helper.dart';
-import 'package:notekeeper/screens/add_note_screen.dart';
-import 'package:notekeeper/screens/edit_note_screen.dart';
-import 'package:notekeeper/screens/notes_search_screen.dart';
-import 'package:notekeeper/utils/colors_list.dart' as color_list;
-import 'package:notekeeper/widgets/custom_fab_widget.dart';
-import 'package:notekeeper/widgets/note_grid_card.dart';
+
+import 'package:notekeeper/core/widgets/custom_fab_widget.dart';
+import 'package:notekeeper/core/widgets/list_view/grid_list.dart';
+
+import 'package:notekeeper/main.dart';
+import 'package:notekeeper/ui/screens/home_screen/home_view_model.dart';
+import 'package:notekeeper/core/utils/colors_list.dart' as color_list;
+
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:notekeeper/utils/textstyle_list.dart' as text_style;
+import 'package:notekeeper/core/utils/textstyle_list.dart' as text_style;
 import 'package:animations/animations.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,17 +25,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final transitionType = ContainerTransitionType.fade;
 
-  DBHelper dbHelper;
   var scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController _searchEditingController=TextEditingController();
   bool isGrid=true;
+
+  HomeViewModel homeViewModel=getItInstance.get<HomeViewModel>();
   
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    dbHelper=DBHelper(notesTableName: 'notesTable');
+    homeViewModel.fetchInitialList();
   }
 
   void onPopping(){
@@ -131,9 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: InkWell(
                       child: isGrid?SvgPicture.asset('assets/grid_list_icon.svg',color: Colors.white,):SvgPicture.asset('assets/list_view_icon.svg',color: Colors.white,),
                       onTap: (){
-                        setState(() {
-                          isGrid=!isGrid;
-                        });
+                        homeViewModel.toggleGrid();
                       },
                     ),
                   ),
@@ -141,9 +141,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.only(left:10.0),
                     child: InkWell(
                       child: Icon(Icons.filter_list,color: Colors.white,),
-                      onTap: (){
+                      /*onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>NotesSearchScreen()));
-                      },
+                      },*/
                     ),
                   )
                 ],
@@ -155,99 +155,16 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               height: MediaQuery.of(context).size.height,
               padding: EdgeInsets.all(10),
-              child: FutureBuilder<List<Map<String,dynamic>>>(
-                future: _searchEditingController.text.length==0?dbHelper.getListOfNotes():dbHelper.getSearchList(
-                    searchText: "'%${_searchEditingController.text}%'",
-                    sortArgument: "noteTitle"
-                ),
-                builder: (BuildContext context,AsyncSnapshot snapshot){
-                  if(snapshot.connectionState==ConnectionState.done){
-                    if(snapshot.hasData){
-                      return isGrid?_buildGrid(snapshot.data):_buildList(snapshot.data);
-                    }
-                    else{
-                      return Center(child: Text("Save something"),);
-                    }
-                  }
-                  return Center(child: CircularProgressIndicator());
-                }
-              )
+              child: NotesGridList(noteList:homeViewModel.notesList,)
             )
           ],
         ),
       ),
-      /*floatingActionButton: FloatingActionButton(
-        onPressed: () async{
-          await Navigator.push(context, MaterialPageRoute(
-              builder: (BuildContext context)=>AddNoteScreen(
-                dbHelper: dbHelper,
-                callback: (){
-                  setState(() {
-
-                  });
-                },
-          )
-          ));
-          setState(() {
-
-          });
-        },
-        child: Icon(Icons.add,size: 40,),
-      ),*/
-      floatingActionButton: CustomFABWidget(
-        dbHelper: dbHelper,
-        transitionType: transitionType,
-        callback:(){
-          setState(() {
-          });
-        },
-      ),
+      floatingActionButton: CustomFABWidget(),
     );
   }
 
 
-
-  Widget _buildGrid(List<Map<String,dynamic>> data){
-    return StaggeredGridView.countBuilder(
-        crossAxisCount: 4,
-        itemCount: data.length,
-        itemBuilder:(context,index){
-          print(data[0]);
-          /*return GestureDetector(
-            onTap: ()async{
-              await Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => EditNoteScreen(
-                  dbHelper: dbHelper,
-                  note: data[index],
-                ),
-              ));
-
-              setState(() {
-              });
-
-            },
-            child: NoteGridCard(
-              index:index,
-              note:data[index]
-            ),
-          );*/
-          return OpenContainer(
-            transitionType: transitionType,
-            transitionDuration: Duration(milliseconds:400),
-            openBuilder: (context, _) {
-              return EditNoteScreen(note: data[index],dbHelper: dbHelper);
-            },
-            closedColor: color_list.appbackgroundColorDark,
-            closedBuilder: (context, VoidCallback openContainer) => NoteGridCard(
-              index: index,
-              onClicked: openContainer,
-              note: data[index],
-            ),
-          );
-        },
-        staggeredTileBuilder: (index)=>StaggeredTile.fit(2)
-    );
-  }
 
 
   Widget _buildList(List<Map<String,dynamic>> data){
