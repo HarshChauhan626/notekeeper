@@ -23,10 +23,7 @@ class NotesGridList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create:(context)=>this.viewModel,
-      child:Consumer<HomeViewModel>(
-        builder: (context,model,child)=>AnimationLimiter(
+    return AnimationLimiter(
             child: StaggeredGridView.countBuilder(
                 crossAxisCount: 4,
                 itemCount: noteList.length,
@@ -45,8 +42,6 @@ class NotesGridList extends StatelessWidget {
                   );
                 },
                 staggeredTileBuilder: (index) => StaggeredTile.fit(2))
-        ),
-      ),
     );
   }
 }
