@@ -10,6 +10,7 @@ class NoteModel{
   String noteData;
   String updateTime;
   String createTime;
+  String noteColorName;
   Color noteColor;
   String isPinned;
   String isArchive;
@@ -33,6 +34,7 @@ class NoteModel{
     noteData=noteMap['noteData'];
     updateTime=noteMap['updateTime'];
     createTime=noteMap['createTime'];
+    noteColorName=noteMap['noteColor'];
     noteColor=getColor(noteMap['noteColor']);
     isPinned=noteMap['isPinned'];
     isArchive=noteMap['isArchive'];

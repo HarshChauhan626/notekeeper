@@ -7,7 +7,7 @@ import 'package:notekeeper/core/service_locator.dart';
 import 'package:notekeeper/core/utils/colors_list.dart' as color_list;
 
 
-class AddNoteViewModel extends ChangeNotifier{
+class EditNoteViewModel extends ChangeNotifier{
   TextEditingController noteTitleEditingController=TextEditingController();
   TextEditingController noteDataEditingController=TextEditingController();
 
@@ -21,10 +21,19 @@ class AddNoteViewModel extends ChangeNotifier{
   int isPinnedValue=0;
   int isArchiveValue=0;
 
-  Color noteColor=color_list.appbackgroundColorDark;
-  String noteColorName="default";
+  Color noteColor;
+  String noteColorName;
+
+  int isPinned;
+  int isArchive;
+  int result;
 
   RegExp regExp=RegExp(r'^#');
+
+
+  void initData()async{
+
+  }
 
   void setUpEditingController()async{
     noteDataEditingController.addListener(() async{
@@ -32,8 +41,8 @@ class AddNoteViewModel extends ChangeNotifier{
       if(regExp.hasMatch(noteDataEditingController.text)){
         print("match found");
         await Future.delayed(Duration(seconds: 2));
-          noteDataEditingController.text=noteDataEditingController.text.replaceAll("#", "");
-          notifyListeners();
+        noteDataEditingController.text=noteDataEditingController.text.replaceAll("#", "");
+        notifyListeners();
       }
     });
   }
@@ -57,12 +66,7 @@ class AddNoteViewModel extends ChangeNotifier{
 
   void funcSaveNote(var uuid)async{
     int untitledCount=await dbHelper.getUntitledCount();
-    if((noteDataEditingController.text.length>=1) && (noteTitleEditingController.text.length==0)){
-      dbHelper.add(uuid.v1(),"Untitled ${untitledCount+1}",noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,DateTime.now().millisecondsSinceEpoch,noteColorName,isPinnedValue,isArchiveValue,"none");
-    }
-    if((noteDataEditingController.text.length>=1) && (noteTitleEditingController.text.length!=0)){
-      dbHelper.add(uuid.v1(),noteTitleEditingController.text, noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,DateTime.now().millisecondsSinceEpoch,noteColorName,isPinnedValue,isArchiveValue,"none");
-    }
+    var result=await dbHelper.updateNote(notesID,noteTitleEditingController.text, noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,noteColorName,isPinnedValue,isArchiveValue,"none");
   }
 
   void changeNoteColor(int index)async{
@@ -72,5 +76,3 @@ class AddNoteViewModel extends ChangeNotifier{
   }
 
 }
-
-

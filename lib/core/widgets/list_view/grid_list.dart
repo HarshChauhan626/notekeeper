@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:notekeeper/core/models/note_model.dart';
 import 'package:notekeeper/core/widgets/note_grid_card.dart';
 import 'package:notekeeper/main.dart';
 import 'package:notekeeper/ui/screens/home_screen/home_view_model.dart';
@@ -11,7 +12,7 @@ import 'package:provider/provider.dart';
 
 class NotesGridList extends StatelessWidget {
 
-  List<Map<String,dynamic>> noteList;
+  List<NoteModel> noteList;
   HomeViewModel viewModel;
 
   NotesGridList({

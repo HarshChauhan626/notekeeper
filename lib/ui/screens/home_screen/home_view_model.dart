@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:notekeeper/core/helper/notes_db_helper.dart';
+import 'package:notekeeper/core/models/note_model.dart';
 import 'package:notekeeper/core/service_locator.dart';
 import 'package:notekeeper/main.dart';
 
 
 class HomeViewModel extends ChangeNotifier{
   DBHelper dbHelper=serviceLocator.get<DBHelper>();
-  List<Map<String,dynamic>> notesList=[];
+  List<NoteModel> notesList=[];
 
   bool isGrid = true;
 
@@ -20,18 +21,12 @@ class HomeViewModel extends ChangeNotifier{
 
 
   Future<void> fetchInitialList()async{
-    notesList=await dbHelper.getListOfNotes();
+    var noteList=await dbHelper.getListOfNotes();
+    notesList=noteList.map((data) => NoteModel.fromJson(data)).toList();
     notifyListeners();
   }
 
-  Future<void> searchList(String searchText)async{
-    if(searchText.length==0){
-      notesList=await dbHelper.getListOfNotes();
-    }
-    else{
-      notesList=await dbHelper.getSearchList(searchText: "'%${searchText}%'");
-    }
-  }
+
 
   void toggleGrid() async{
     isGrid=!isGrid;

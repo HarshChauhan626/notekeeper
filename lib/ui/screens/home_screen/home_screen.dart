@@ -14,6 +14,7 @@ import 'package:notekeeper/core/utils/colors_list.dart' as color_list;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:notekeeper/core/utils/textstyle_list.dart' as text_style;
 import 'package:animations/animations.dart';
+import 'package:notekeeper/ui/screens/note_search_screen/note_search_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -105,12 +106,92 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget getAppBar(){
-    return AppBar(
-      title: Text("Notekeeper"),
-      leading: Text(""),
-      centerTitle: true,
-      backgroundColor: color_list.appbackgroundColorDark,
+  Widget getAppBar({HomeViewModel homeViewModel}) {
+    return Container(
+      height: MediaQuery.of(context).size.height / 14,
+      width: MediaQuery.of(context).size.width - 30,
+      decoration: BoxDecoration(
+          color: color_list.containerColor,
+          //color: Colors.white,
+          borderRadius:
+          BorderRadius.circular(MediaQuery.of(context).size.width / 12)),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            child: InkWell(
+              child: SvgPicture.asset(
+                'assets/custom_drawer_icon.svg',
+                color: Colors.white,
+              ),
+              onTap: () {
+                scaffoldKey.currentState.openDrawer();
+                print("Drawer called");
+              },
+            ),
+          ),
+          OpenContainer(
+              openBuilder: (context, _) {
+                return NoteSearchScreen();
+              },
+              closedColor: color_list.appbackgroundColorDark,
+              transitionDuration: Duration(milliseconds: 400),
+              transitionType: ContainerTransitionType.fadeThrough,
+              closedBuilder: (context, VoidCallback openContainer) =>
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                    width: 180,
+                    color: color_list.containerColor,
+                    child: TextField(
+                      onTap: (){
+                        openContainer();
+                      },
+                      controller: _searchEditingController,
+                      autofocus: false,
+                      style: text_style.whiteContentStyle,
+                      cursorColor: Colors.blueGrey,
+                      decoration: InputDecoration(
+                        hintStyle: text_style.greyContentStyle,
+                        hintText: 'Search',
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  )
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: InkWell(
+              child: homeViewModel.isGrid
+                  ? SvgPicture.asset(
+                'assets/grid_list_icon.svg',
+                color: Colors.white,
+              )
+                  : SvgPicture.asset(
+                'assets/list_view_icon.svg',
+                color: Colors.white,
+              ),
+              onTap: () {
+                homeViewModel.toggleGrid();
+              },
+            ),
+          ),
+          PopupMenuButton<String>(
+            icon: Icon(Icons.sort,color: Colors.white,),
+            color: color_list.containerColor,
+            onSelected: (String choice){
+              homeViewModel.chooseSortingType(choice);
+            },
+            itemBuilder: (BuildContext context) {
+              return homeViewModel.listOfSorting.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Container(child: Text(choice,style: text_style.whiteContentStyle,)),
+                );
+              }).toList();
+            },
+          ),
+        ],
+      ),
     );
   }
 

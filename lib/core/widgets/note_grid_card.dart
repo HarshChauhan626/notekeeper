@@ -2,12 +2,13 @@
 
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:notekeeper/core/models/note_model.dart';
 import 'package:notekeeper/ui/screens/add_edit_screen/edit_note_screen.dart';
 import 'package:notekeeper/core/utils/colors_list.dart' as color_list;
 import 'package:notekeeper/core/utils/textstyle_list.dart' as textstyle_list;
 class NoteGridCard extends StatelessWidget {
   int index;
-  Map<String,dynamic> note;
+  NoteModel note;
   NoteGridCard({
     Key key,
     this.index,
@@ -17,7 +18,7 @@ class NoteGridCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(note['noteColor']);
+    print(note.noteColor.value.toString());
     //final minHeight = getMinHeight(index);
     final minHeight=140.0;
 
@@ -36,7 +37,7 @@ class NoteGridCard extends StatelessWidget {
           color: color_list.appbackgroundColorDark,
           child: Container(
             decoration: BoxDecoration(
-                color: note['noteColor']=="default"?color_list.containerColor:color_list.kNoteColorsMap[note['noteColor']],
+                color: note.noteColor,
                 borderRadius: BorderRadius.circular(10)
             ),
             padding: EdgeInsets.all(8),
@@ -46,14 +47,14 @@ class NoteGridCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  note['noteTitle'],
+                  note.noteTitle,
                   style: textstyle_list.whiteContentStyle,
                 ),
                 Text(
-                  note['noteData'],
+                  note.noteData,
                   style: textstyle_list.whiteContentStyle,
                 ),
-                Text(note['noteColor'].toString())
+                //Text(note.not.toString())
               ],
             ),
           ),

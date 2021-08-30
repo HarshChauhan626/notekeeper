@@ -1,6 +1,7 @@
 // @dart=2.9
 
 import 'package:notekeeper/core/helper/notes_db_helper.dart';
+import 'package:notekeeper/core/models/note_model.dart';
 import 'package:notekeeper/core/service_locator.dart';
 import 'package:notekeeper/main.dart';
 import 'package:notekeeper/core/utils/colors_list.dart' as color_list;
@@ -10,7 +11,7 @@ import 'package:uuid/uuid.dart';
 
 
 class EditNoteScreen extends StatefulWidget {
-  Map<String,dynamic> note;
+  NoteModel note;
   EditNoteScreen({this.note});
 
   @override
@@ -46,7 +47,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
     _noteDataEditingController.text=widget.note['noteData'];
     noteColorName=widget.note['noteColor'];
     print(noteColorName);
-    noteColor=widget.note['noteColor']=="default"?color_list.appbackgroundColorDark:color_list.kNoteColorsMap[widget.note['noteColor']];
+    noteColor=this.widget.note.noteColor;
   }
 
 
