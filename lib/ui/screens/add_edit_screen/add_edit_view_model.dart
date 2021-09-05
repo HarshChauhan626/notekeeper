@@ -1,76 +1,96 @@
 // @dart=2.9
 
-
 import 'package:flutter/material.dart';
 import 'package:notekeeper/core/helper/notes_db_helper.dart';
 import 'package:notekeeper/core/service_locator.dart';
 import 'package:notekeeper/core/utils/colors_list.dart' as color_list;
 
+class AddNoteViewModel extends ChangeNotifier {
+  TextEditingController noteTitleEditingController = TextEditingController();
+  TextEditingController noteDataEditingController = TextEditingController();
 
-class AddNoteViewModel extends ChangeNotifier{
-  TextEditingController noteTitleEditingController=TextEditingController();
-  TextEditingController noteDataEditingController=TextEditingController();
+  DBHelper dbHelper = serviceLocator.get<DBHelper>();
 
+  int titleMaxLines = 10;
+  int dataMaxLines = 1000;
 
-  DBHelper dbHelper=serviceLocator.get<DBHelper>();
+  int isPinnedValue = 0;
+  int isArchiveValue = 0;
 
+  Color noteColor = color_list.appbackgroundColorDark;
+  String noteColorName = "default";
 
-  int titleMaxLines=10;
-  int dataMaxLines=1000;
+  // TODO :- Change font to something meaningful
+  String noteFont = "roboto";
 
-  int isPinnedValue=0;
-  int isArchiveValue=0;
+  RegExp regExp = RegExp(r'^#');
 
-  Color noteColor=color_list.appbackgroundColorDark;
-  String noteColorName="default";
-
-  RegExp regExp=RegExp(r'^#');
-
-  void setUpEditingController()async{
-    noteDataEditingController.addListener(() async{
+  void setUpEditingController() async {
+    noteDataEditingController.addListener(() async {
       //print(_noteDataEditingController.text);
-      if(regExp.hasMatch(noteDataEditingController.text)){
+      if (regExp.hasMatch(noteDataEditingController.text)) {
         print("match found");
         await Future.delayed(Duration(seconds: 2));
-          noteDataEditingController.text=noteDataEditingController.text.replaceAll("#", "");
-          notifyListeners();
+        noteDataEditingController.text =
+            noteDataEditingController.text.replaceAll("#", "");
+        notifyListeners();
       }
     });
   }
 
-
-  void changePinnedValue(){
-    isPinnedValue=1-isPinnedValue;
+  void changePinnedValue() {
+    isPinnedValue = 1 - isPinnedValue;
     notifyListeners();
   }
 
-  void changeArchiveValue(){
-    isArchiveValue=1-isArchiveValue;
+  void changeArchiveValue() {
+    isArchiveValue = 1 - isArchiveValue;
     notifyListeners();
   }
 
-
-  void disposeTextController(){
+  void disposeTextController() {
     noteTitleEditingController.dispose();
     noteDataEditingController.dispose();
   }
 
-  void funcSaveNote(var uuid)async{
-    int untitledCount=await dbHelper.getUntitledCount();
-    if((noteDataEditingController.text.length>=1) && (noteTitleEditingController.text.length==0)){
-      dbHelper.add(uuid.v1(),"Untitled ${untitledCount+1}",noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,DateTime.now().millisecondsSinceEpoch,noteColorName,isPinnedValue,isArchiveValue,"none");
+  void funcSaveNote(var uuid) async {
+    int untitledCount = await dbHelper.getUntitledCount();
+    if ((noteDataEditingController.text.length >= 1) &&
+        (noteTitleEditingController.text.length == 0)) {
+      dbHelper.add(
+          uuid.v1(),
+          "Untitled ${untitledCount + 1}",
+          noteDataEditingController.text,
+          DateTime.now().millisecondsSinceEpoch,
+          DateTime.now().millisecondsSinceEpoch,
+          noteColorName,
+          isPinnedValue,
+          isArchiveValue,
+          "none");
     }
-    if((noteDataEditingController.text.length>=1) && (noteTitleEditingController.text.length!=0)){
-      dbHelper.add(uuid.v1(),noteTitleEditingController.text, noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,DateTime.now().millisecondsSinceEpoch,noteColorName,isPinnedValue,isArchiveValue,"none");
+    if ((noteDataEditingController.text.length >= 1) &&
+        (noteTitleEditingController.text.length != 0)) {
+      dbHelper.add(
+          uuid.v1(),
+          noteTitleEditingController.text,
+          noteDataEditingController.text,
+          DateTime.now().millisecondsSinceEpoch,
+          DateTime.now().millisecondsSinceEpoch,
+          noteColorName,
+          isPinnedValue,
+          isArchiveValue,
+          "none");
     }
   }
 
-  void changeNoteColor(int index)async{
-    noteColor=color_list.kNoteColorsMap[color_list.kNoteColors[index]];
-    noteColorName=color_list.kNoteColors[index];
+  void changeNoteColor(int index) async {
+    noteColor = color_list.kNoteColorsMap[color_list.kNoteColors[index]];
+    noteColorName = color_list.kNoteColors[index];
     notifyListeners();
   }
 
+  void changeNoteFont(String choice) async {
+    noteFont = choice;
+    notifyListeners();
+  }
 }
-
-

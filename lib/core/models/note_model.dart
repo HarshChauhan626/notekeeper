@@ -12,8 +12,8 @@ class NoteModel{
   String createTime;
   String noteColorName;
   Color noteColor;
-  String isPinned;
-  String isArchive;
+  int isPinned;
+  int isArchive;
   String tag;
   
   NoteModel({
@@ -32,8 +32,8 @@ class NoteModel{
     notesId=noteMap['notesId'];
     noteTitle=noteMap['noteTitle'];
     noteData=noteMap['noteData'];
-    updateTime=noteMap['updateTime'];
-    createTime=noteMap['createTime'];
+    updateTime=noteMap['updateTime'].toString();
+    createTime=noteMap['createTime'].toString();
     noteColorName=noteMap['noteColor'];
     noteColor=getColor(noteMap['noteColor']);
     isPinned=noteMap['isPinned'];
@@ -43,7 +43,7 @@ class NoteModel{
   
   
   Color getColor(String color){
-    Color noteColor=color=="default"?color_list.appbackgroundColorDark:color_list.kNoteColorsMap[color];
+    Color noteColor=color=="default"?color_list.containerColor:color_list.kNoteColorsMap[color];
     return noteColor;
   }
 

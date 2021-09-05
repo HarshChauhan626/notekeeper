@@ -176,10 +176,11 @@ class DBHelper {
   }
 
 
-  Future<List<Map<String,dynamic>>> getListOfNotes()async{
+  Future<List<Map<String,dynamic>>> getListOfNotes(String sortingType)async{
     var dbClient=await db;
     var listOfNotes=await dbClient.rawQuery('''
     SELECT * FROM $notesTableName
+    ORDER BY $sortingType
     ''');
     print("Retrieving list");
     return listOfNotes;

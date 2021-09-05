@@ -1,6 +1,5 @@
 // @dart=2.9
 
-
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:notekeeper/core/helper/notes_db_helper.dart';
@@ -9,14 +8,9 @@ import 'package:notekeeper/ui/screens/home_screen/home_screen.dart';
 import 'package:notekeeper/ui/screens/splash_screen.dart';
 import 'package:notekeeper/ui/screens/home_screen/home_view_model.dart';
 
-
-
-
 void main() {
   setupServiceLocator();
-  runApp(
-      MyApp()
-  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -33,4 +27,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

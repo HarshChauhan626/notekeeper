@@ -25,15 +25,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   final transitionType = ContainerTransitionType.fade;
 
   var scaffoldKey = GlobalKey<ScaffoldState>();
-  TextEditingController _searchEditingController=TextEditingController();
-  bool isGrid=true;
+  TextEditingController _searchEditingController = TextEditingController();
+  bool isGrid = true;
 
-  HomeViewModel homeViewModel=serviceLocator.get<HomeViewModel>();
-  
+  HomeViewModel homeViewModel = serviceLocator.get<HomeViewModel>();
 
   @override
   void initState() {
@@ -47,37 +45,35 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     //homeViewModel.fetchInitialList();
+    print("This is called in home");
+    homeViewModel.refreshNoteList();
   }
 
-  void onPopping(){
-    setState(() {
-    });
+  void onPopping() {
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     print(homeViewModel.notesList.length);
     return ChangeNotifierProvider(
-      create:(context)=>homeViewModel,
+      create: (context) => homeViewModel,
       child: Consumer<HomeViewModel>(
-        builder: (context,model,child)=>Scaffold(
-          key: scaffoldKey,
-          drawer:getDrawer(),
-          backgroundColor: color_list.appbackgroundColorDark,
-          appBar: getAppBar(),
-          body: getBody(homeViewModel: model),
-          floatingActionButton: CustomFABWidget(
-            callback: ()async{
-              await model.refreshNoteList();
-            },
+        builder: (context, model, child) => SafeArea(
+          child: Scaffold(
+            key: scaffoldKey,
+            drawer: getDrawer(),
+            backgroundColor: color_list.appbackgroundColorDark,
+            //appBar: getAppBar(homeViewModel: homeViewModel),
+            body: getBody(homeViewModel: model),
+            floatingActionButton: CustomFABWidget(),
           ),
         ),
       ),
     );
   }
 
-
-  Widget getDrawer(){
+  Widget getDrawer() {
     return Container(
       width: 240,
       child: Drawer(
@@ -91,13 +87,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               ListTile(
-                title: Text("Notes",style: text_style.whiteContentStyle,),
+                title: Text(
+                  "Notes",
+                  style: text_style.whiteContentStyle,
+                ),
               ),
               ListTile(
-                  title:Text("Todos",style:text_style.whiteContentStyle)
-              ),
+                  title: Text("Todos", style: text_style.whiteContentStyle)),
               ListTile(
-                title: Text("Reminders",style: text_style.whiteContentStyle,),
+                title: Text(
+                  "Reminders",
+                  style: text_style.whiteContentStyle,
+                ),
               )
             ],
           ),
@@ -114,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
           color: color_list.containerColor,
           //color: Colors.white,
           borderRadius:
-          BorderRadius.circular(MediaQuery.of(context).size.width / 12)),
+              BorderRadius.circular(MediaQuery.of(context).size.width / 12)),
       child: Row(
         children: [
           Padding(
@@ -137,13 +138,12 @@ class _HomeScreenState extends State<HomeScreen> {
               closedColor: color_list.appbackgroundColorDark,
               transitionDuration: Duration(milliseconds: 400),
               transitionType: ContainerTransitionType.fadeThrough,
-              closedBuilder: (context, VoidCallback openContainer) =>
-                  Container(
+              closedBuilder: (context, VoidCallback openContainer) => Container(
                     padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                     width: 180,
                     color: color_list.containerColor,
                     child: TextField(
-                      onTap: (){
+                      onTap: () {
                         openContainer();
                       },
                       controller: _searchEditingController,
@@ -156,36 +156,42 @@ class _HomeScreenState extends State<HomeScreen> {
                         border: InputBorder.none,
                       ),
                     ),
-                  )
-          ),
+                  )),
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: InkWell(
               child: homeViewModel.isGrid
                   ? SvgPicture.asset(
-                'assets/grid_list_icon.svg',
-                color: Colors.white,
-              )
+                      'assets/grid_list_icon.svg',
+                      color: Colors.white,
+                    )
                   : SvgPicture.asset(
-                'assets/list_view_icon.svg',
-                color: Colors.white,
-              ),
+                      'assets/list_view_icon.svg',
+                      color: Colors.white,
+                    ),
               onTap: () {
                 homeViewModel.toggleGrid();
               },
             ),
           ),
           PopupMenuButton<String>(
-            icon: Icon(Icons.sort,color: Colors.white,),
+            icon: Icon(
+              Icons.sort,
+              color: Colors.white,
+            ),
             color: color_list.containerColor,
-            onSelected: (String choice){
+            onSelected: (String choice) {
               homeViewModel.chooseSortingType(choice);
             },
             itemBuilder: (BuildContext context) {
               return homeViewModel.listOfSorting.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
-                  child: Container(child: Text(choice,style: text_style.whiteContentStyle,)),
+                  child: Container(
+                      child: Text(
+                    choice,
+                    style: text_style.whiteContentStyle,
+                  )),
                 );
               }).toList();
             },
@@ -195,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget getBody({HomeViewModel homeViewModel}){
+  Widget getBody({HomeViewModel homeViewModel}) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -205,71 +211,81 @@ class _HomeScreenState extends State<HomeScreen> {
             width: double.infinity,
             color: color_list.appbackgroundColorDark,
           ),
-          Container(
-            height: MediaQuery.of(context).size.height/14,
-            width: MediaQuery.of(context).size.width-30,
-            decoration: BoxDecoration(
-                color: color_list.containerColor,
-                //color: Colors.white,
-                borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width/12)
-            ),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal:18.0),
-                  child: InkWell(
-                    child: SvgPicture.asset('assets/custom_drawer_icon.svg',color: Colors.white,),
-                    onTap: (){
-                      scaffoldKey.currentState.openDrawer();
-                    },
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 2,vertical: 2),
-                  width: 180,
-                  child: TextField(
-                    controller: _searchEditingController,
-                    onChanged: (text)async{
-                      await homeViewModel.fetchInitialList();
-                    },
-                    style: text_style.whiteContentStyle,
-                    cursorColor: Colors.blueGrey,
-                    decoration: InputDecoration(
-                      hintStyle:text_style.greyContentStyle,
-                      hintText: 'Search',
-                      border: InputBorder.none,
+          OpenContainer(
+            transitionDuration: Duration(milliseconds: 400),
+            openBuilder: (context, _) => NoteSearchScreen(),
+            //closedShape: CircleBorder(),
+            closedColor: color_list.containerColor,
+            closedBuilder: (context, openContainer) => Container(
+              height: MediaQuery.of(context).size.height / 14,
+              width: MediaQuery.of(context).size.width - 30,
+              decoration: BoxDecoration(
+                  color: color_list.containerColor,
+                  //color: Colors.white,
+                  borderRadius: BorderRadius.circular(
+                      MediaQuery.of(context).size.width / 12)),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    child: InkWell(
+                      child: SvgPicture.asset(
+                        'assets/custom_drawer_icon.svg',
+                        color: Colors.white,
+                      ),
+                      onTap: () {
+                        scaffoldKey.currentState.openDrawer();
+                      },
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right:8.0),
-                  child: InkWell(
-                    child: homeViewModel.isGrid?SvgPicture.asset('assets/grid_list_icon.svg',color: Colors.white,):SvgPicture.asset('assets/list_view_icon.svg',color: Colors.white,),
-                    onTap: ()async{
-                      homeViewModel.toggleGrid();
-                    },
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                    width: 180,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left:10.0),
-                  child: InkWell(
-                    child: Icon(Icons.filter_list,color: Colors.white,),
-                    /*onTap: (){
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: InkWell(
+                      child: homeViewModel.isGrid
+                          ? SvgPicture.asset(
+                              'assets/grid_list_icon.svg',
+                              color: Colors.white,
+                            )
+                          : SvgPicture.asset(
+                              'assets/list_view_icon.svg',
+                              color: Colors.white,
+                            ),
+                      onTap: () async {
+                        homeViewModel.toggleGrid();
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: InkWell(
+                      child: Icon(
+                        Icons.filter_list,
+                        color: Colors.white,
+                      ),
+                      /*onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>NotesSearchScreen()));
                       },*/
-                  ),
-                )
-              ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           SizedBox(
             height: 10,
           ),
           Container(
-              height: MediaQuery.of(context).size.height,
-              padding: EdgeInsets.all(10),
+            height: MediaQuery.of(context).size.height - 92,
+            padding: EdgeInsets.all(10),
             child: NotesGridList(
-              noteList:homeViewModel.notesList
+              noteList: homeViewModel.notesList,
+              voidCallBack: () async {
+                await homeViewModel.refreshNoteList();
+              },
             ),
           )
         ],
@@ -277,31 +293,27 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
-
-  Widget _buildList(List<Map<String,dynamic>> data){
-    return ListView.builder(itemCount: data.length,itemBuilder: (context,index){
-      return Card(
-        child: Container(
-          color: color_list.containerColor,
-          child: Column(
-            children: [
-              Text(data[index]['noteTitle'],style: text_style.whiteContentStyle,),
-              Text(data[index]['noteData'],style: text_style.whiteContentStyle,)
-            ],
-          ),
-        ),
-      );
-    });
+  Widget _buildList(List<Map<String, dynamic>> data) {
+    return ListView.builder(
+        itemCount: data.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: Container(
+              color: color_list.containerColor,
+              child: Column(
+                children: [
+                  Text(
+                    data[index]['noteTitle'],
+                    style: text_style.whiteContentStyle,
+                  ),
+                  Text(
+                    data[index]['noteData'],
+                    style: text_style.whiteContentStyle,
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
-
-
 }
-
-
-
-
-
-
-
-
