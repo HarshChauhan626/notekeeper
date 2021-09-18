@@ -2,7 +2,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:notekeeper/core/utils/colors_list.dart' as color_list;
+import 'package:notekeeper/core/utils/colors_list.dart';
 
 class NoteModel{
   String notesId;
@@ -43,7 +43,7 @@ class NoteModel{
   
   
   Color getColor(String color){
-    Color noteColor=color=="default"?color_list.containerColor:color_list.kNoteColorsMap[color];
+    Color noteColor=color=="default"?ColorList.containerColor:ColorList.kNoteColorsMap[color];
     return noteColor;
   }
 

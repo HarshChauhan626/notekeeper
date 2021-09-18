@@ -22,8 +22,8 @@ class HomeViewModel extends ChangeNotifier {
   Map<String, String> sortingMap = {
     'Title ASC': "noteTitle ASC",
     'Title DESC': "noteTitle DESC",
-    'LastUpdateTime ASC': "lastUpdateTime ASC",
-    'LastUpdateTime DESC': "lastUpdateTime DESC"
+    'LastUpdateTime ASC': "updateTime ASC",
+    'LastUpdateTime DESC': "updateTime DESC"
   };
 
   var selectedSorting = "noteTitle ASC";

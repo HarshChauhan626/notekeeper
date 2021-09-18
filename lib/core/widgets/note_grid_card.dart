@@ -3,9 +3,9 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:notekeeper/core/models/note_model.dart';
+import 'package:notekeeper/core/utils/textstyle_list.dart';
 import 'package:notekeeper/ui/screens/add_edit_screen/edit_note_screen.dart';
-import 'package:notekeeper/core/utils/colors_list.dart' as color_list;
-import 'package:notekeeper/core/utils/textstyle_list.dart' as textstyle_list;
+import 'package:notekeeper/core/utils/colors_list.dart';
 class NoteGridCard extends StatelessWidget {
   int index;
   NoteModel note;
@@ -28,13 +28,13 @@ class NoteGridCard extends StatelessWidget {
       openBuilder: (context, _) {
         return EditNoteScreen(note:this.note);
       },
-      closedColor: color_list.appbackgroundColorDark,
+      closedColor: ColorList.appbackgroundColorDark,
       closedBuilder: (context, VoidCallback openContainer) => GestureDetector(
         onTap: (){
           openContainer();
         },
         child: Card(
-          color: color_list.appbackgroundColorDark,
+          color: ColorList.appbackgroundColorDark,
           child: Container(
             decoration: BoxDecoration(
                 color: note.noteColor,
@@ -46,13 +46,19 @@ class NoteGridCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Container(
+                  height: 20,
+                ),
                 Text(
                   note.noteTitle,
-                  style: textstyle_list.whiteContentStyle,
+                  style: CustomTextStyle.whiteContentStyle,
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 Text(
                   note.noteData,
-                  style: textstyle_list.whiteContentStyle,
+                  style: CustomTextStyle.whiteContentStyle,
                 ),
                 //Text(note.not.toString())
               ],

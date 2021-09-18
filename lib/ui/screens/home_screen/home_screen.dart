@@ -9,10 +9,10 @@ import 'package:notekeeper/core/widgets/list_view/grid_list.dart';
 
 import 'package:notekeeper/main.dart';
 import 'package:notekeeper/ui/screens/home_screen/home_view_model.dart';
-import 'package:notekeeper/core/utils/colors_list.dart' as color_list;
+import 'package:notekeeper/core/utils/colors_list.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:notekeeper/core/utils/textstyle_list.dart' as text_style;
+import 'package:notekeeper/core/utils/textstyle_list.dart';
 import 'package:animations/animations.dart';
 import 'package:notekeeper/ui/screens/note_search_screen/note_search_screen.dart';
 import 'package:provider/provider.dart';
@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Scaffold(
             key: scaffoldKey,
             drawer: getDrawer(),
-            backgroundColor: color_list.appbackgroundColorDark,
+            backgroundColor: ColorList.appbackgroundColorDark,
             //appBar: getAppBar(homeViewModel: homeViewModel),
             body: getBody(homeViewModel: model),
             floatingActionButton: CustomFABWidget(),
@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
       width: 240,
       child: Drawer(
         child: Container(
-          color: color_list.containerColor,
+          color: ColorList.containerColor,
           child: ListView(
             children: [
               DrawerHeader(
@@ -89,15 +89,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ListTile(
                 title: Text(
                   "Notes",
-                  style: text_style.whiteContentStyle,
+                  style: CustomTextStyle.whiteContentStyle,
                 ),
               ),
               ListTile(
-                  title: Text("Todos", style: text_style.whiteContentStyle)),
+                  title: Text("Todos", style: CustomTextStyle.whiteContentStyle)),
               ListTile(
                 title: Text(
                   "Reminders",
-                  style: text_style.whiteContentStyle,
+                  style: CustomTextStyle.whiteContentStyle,
                 ),
               )
             ],
@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
       height: MediaQuery.of(context).size.height / 14,
       width: MediaQuery.of(context).size.width - 30,
       decoration: BoxDecoration(
-          color: color_list.containerColor,
+          color: ColorList.containerColor,
           //color: Colors.white,
           borderRadius:
               BorderRadius.circular(MediaQuery.of(context).size.width / 12)),
@@ -135,23 +135,23 @@ class _HomeScreenState extends State<HomeScreen> {
               openBuilder: (context, _) {
                 return NoteSearchScreen();
               },
-              closedColor: color_list.appbackgroundColorDark,
+              closedColor: ColorList.appbackgroundColorDark,
               transitionDuration: Duration(milliseconds: 400),
               transitionType: ContainerTransitionType.fadeThrough,
               closedBuilder: (context, VoidCallback openContainer) => Container(
                     padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                     width: 180,
-                    color: color_list.containerColor,
+                    color: ColorList.containerColor,
                     child: TextField(
                       onTap: () {
                         openContainer();
                       },
                       controller: _searchEditingController,
                       autofocus: false,
-                      style: text_style.whiteContentStyle,
+                      style: CustomTextStyle.whiteContentStyle,
                       cursorColor: Colors.blueGrey,
                       decoration: InputDecoration(
-                        hintStyle: text_style.greyContentStyle,
+                        hintStyle: CustomTextStyle.greyContentStyle,
                         hintText: 'Search',
                         border: InputBorder.none,
                       ),
@@ -174,27 +174,32 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
-          PopupMenuButton<String>(
-            icon: Icon(
-              Icons.sort,
-              color: Colors.white,
+          Container(
+            height: 40,
+            width: 40,
+            color: Colors.red,
+            child: PopupMenuButton<String>(
+              icon: Icon(
+                Icons.sort,
+                color: Colors.white,
+              ),
+              color: ColorList.containerColor,
+              onSelected: (String choice) {
+                homeViewModel.chooseSortingType(choice);
+              },
+              itemBuilder: (BuildContext context) {
+                return homeViewModel.listOfSorting.map((String choice) {
+                  return PopupMenuItem<String>(
+                    value: choice,
+                    child: Container(
+                        child: Text(
+                      choice,
+                      style: CustomTextStyle.whiteContentStyle,
+                    )),
+                  );
+                }).toList();
+              },
             ),
-            color: color_list.containerColor,
-            onSelected: (String choice) {
-              homeViewModel.chooseSortingType(choice);
-            },
-            itemBuilder: (BuildContext context) {
-              return homeViewModel.listOfSorting.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Container(
-                      child: Text(
-                    choice,
-                    style: text_style.whiteContentStyle,
-                  )),
-                );
-              }).toList();
-            },
           ),
         ],
       ),
@@ -209,68 +214,97 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             height: 10,
             width: double.infinity,
-            color: color_list.appbackgroundColorDark,
+            color: ColorList.appbackgroundColorDark,
           ),
           OpenContainer(
             transitionDuration: Duration(milliseconds: 400),
             openBuilder: (context, _) => NoteSearchScreen(),
             //closedShape: CircleBorder(),
-            closedColor: color_list.containerColor,
+            closedColor: ColorList.containerColor,
             closedBuilder: (context, openContainer) => Container(
               height: MediaQuery.of(context).size.height / 14,
               width: MediaQuery.of(context).size.width - 30,
               decoration: BoxDecoration(
-                  color: color_list.containerColor,
+                  color: ColorList.containerColor,
                   //color: Colors.white,
                   borderRadius: BorderRadius.circular(
                       MediaQuery.of(context).size.width / 12)),
               child: Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                    child: InkWell(
-                      child: SvgPicture.asset(
-                        'assets/custom_drawer_icon.svg',
-                        color: Colors.white,
+                    padding: const EdgeInsets.only(left:8.0),
+                    child: Container(
+                      height:40,
+                      width:40,
+                      padding: const EdgeInsets.all(6.0),
+                      //color:Colors.red,
+                      child: InkWell(
+                        child: SvgPicture.asset(
+                          'assets/custom_drawer_icon.svg',
+                          color: Colors.white,
+                        ),
+                        onTap: () {
+                          scaffoldKey.currentState.openDrawer();
+                        },
                       ),
-                      onTap: () {
-                        scaffoldKey.currentState.openDrawer();
-                      },
                     ),
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-                    width: 180,
+                    width: 200,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: InkWell(
-                      child: homeViewModel.isGrid
-                          ? SvgPicture.asset(
-                              'assets/grid_list_icon.svg',
-                              color: Colors.white,
-                            )
-                          : SvgPicture.asset(
-                              'assets/list_view_icon.svg',
-                              color: Colors.white,
-                            ),
-                      onTap: () async {
-                        homeViewModel.toggleGrid();
+                  Container(
+                    height: 40,
+                    width: 30,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: InkWell(
+                        child: homeViewModel.isGrid
+                            ? SvgPicture.asset(
+                                'assets/grid_list_icon.svg',
+                                color: Colors.white,
+                          height: 20,
+                              )
+                            : SvgPicture.asset(
+                                'assets/list_view_icon.svg',
+                                height: 20,
+                                color: Colors.white,
+                              ),
+                        onTap: () async {
+                          homeViewModel.toggleGrid();
+                        },
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 40,
+                    width: 40,
+                    //color: Colors.red,
+                    child: PopupMenuButton<String>(
+                      icon: Icon(
+                        Icons.sort,
+                        size: 25,
+                        color: Colors.white,
+                      ),
+                      color: ColorList.containerColor,
+                      onSelected: (String choice) {
+                        homeViewModel.chooseSortingType(choice);
+                        homeViewModel.refreshNoteList();
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return homeViewModel.listOfSorting.map((String choice) {
+                          return PopupMenuItem<String>(
+                            value: choice,
+                            child: Container(
+                                child: Text(
+                                  choice,
+                                  style: CustomTextStyle.whiteContentStyle,
+                                )),
+                          );
+                        }).toList();
                       },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: InkWell(
-                      child: Icon(
-                        Icons.filter_list,
-                        color: Colors.white,
-                      ),
-                      /*onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>NotesSearchScreen()));
-                      },*/
-                    ),
-                  )
                 ],
               ),
             ),
@@ -283,9 +317,6 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.all(10),
             child: NotesGridList(
               noteList: homeViewModel.notesList,
-              voidCallBack: () async {
-                await homeViewModel.refreshNoteList();
-              },
             ),
           )
         ],
@@ -299,16 +330,16 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           return Card(
             child: Container(
-              color: color_list.containerColor,
+              color: ColorList.containerColor,
               child: Column(
                 children: [
                   Text(
                     data[index]['noteTitle'],
-                    style: text_style.whiteContentStyle,
+                    style: CustomTextStyle.whiteContentStyle,
                   ),
                   Text(
                     data[index]['noteData'],
-                    style: text_style.whiteContentStyle,
+                    style: CustomTextStyle.whiteContentStyle,
                   )
                 ],
               ),

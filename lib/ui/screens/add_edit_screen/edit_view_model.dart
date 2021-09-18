@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:notekeeper/core/helper/notes_db_helper.dart';
 import 'package:notekeeper/core/models/note_model.dart';
 import 'package:notekeeper/core/service_locator.dart';
-import 'package:notekeeper/core/utils/colors_list.dart' as color_list;
+import 'package:notekeeper/core/utils/colors_list.dart';
 
 class EditNoteViewModel extends ChangeNotifier {
   TextEditingController noteTitleEditingController = TextEditingController();
@@ -85,8 +85,8 @@ class EditNoteViewModel extends ChangeNotifier {
   }
 
   void changeNoteColor(int index) async {
-    noteColor = color_list.kNoteColorsMap[color_list.kNoteColors[index]];
-    noteColorName = color_list.kNoteColors[index];
+    noteColor = ColorList.kNoteColorsMap[ColorList.kNoteColors[index]];
+    noteColorName = ColorList.kNoteColors[index];
     notifyListeners();
   }
 }

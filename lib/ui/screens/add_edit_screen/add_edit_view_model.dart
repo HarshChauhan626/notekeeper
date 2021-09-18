@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:notekeeper/core/helper/notes_db_helper.dart';
 import 'package:notekeeper/core/service_locator.dart';
-import 'package:notekeeper/core/utils/colors_list.dart' as color_list;
+import 'package:notekeeper/core/utils/colors_list.dart';
 
 class AddNoteViewModel extends ChangeNotifier {
   TextEditingController noteTitleEditingController = TextEditingController();
@@ -17,7 +17,7 @@ class AddNoteViewModel extends ChangeNotifier {
   int isPinnedValue = 0;
   int isArchiveValue = 0;
 
-  Color noteColor = color_list.appbackgroundColorDark;
+  Color noteColor = ColorList.appbackgroundColorDark;
   String noteColorName = "default";
 
   // TODO :- Change font to something meaningful
@@ -84,8 +84,8 @@ class AddNoteViewModel extends ChangeNotifier {
   }
 
   void changeNoteColor(int index) async {
-    noteColor = color_list.kNoteColorsMap[color_list.kNoteColors[index]];
-    noteColorName = color_list.kNoteColors[index];
+    noteColor = ColorList.kNoteColorsMap[ColorList.kNoteColors[index]];
+    noteColorName = ColorList.kNoteColors[index];
     notifyListeners();
   }
 

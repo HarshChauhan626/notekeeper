@@ -13,16 +13,14 @@ import 'package:provider/provider.dart';
 class NotesGridList extends StatelessWidget {
   List<NoteModel> noteList;
   HomeViewModel viewModel;
-  VoidCallback voidCallback;
 
   NotesGridList(
-      {Key key, this.noteList, this.viewModel, @required voidCallBack})
+      {Key key, this.noteList, this.viewModel})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeViewModel>(
-      builder: (context, model, child) => AnimationLimiter(
+    return AnimationLimiter(
           child: StaggeredGridView.countBuilder(
               crossAxisCount: 4,
               itemCount: noteList.length,
@@ -43,7 +41,6 @@ class NotesGridList extends StatelessWidget {
                   ),
                 );
               },
-              staggeredTileBuilder: (index) => StaggeredTile.fit(2))),
-    );
+              staggeredTileBuilder: (index) => StaggeredTile.fit(2)));
   }
 }

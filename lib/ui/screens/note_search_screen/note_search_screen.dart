@@ -3,9 +3,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:notekeeper/core/helper/notes_db_helper.dart';
-import 'package:notekeeper/core/utils/colors_list.dart' as color_list;
-import 'package:notekeeper/core/utils/textstyle_list.dart' as textstyle_list;
+import 'package:notekeeper/core/utils/colors_list.dart';
+
 import 'package:notekeeper/core/service_locator.dart';
+import 'package:notekeeper/core/utils/textstyle_list.dart';
 import 'package:notekeeper/core/widgets/list_view/grid_list.dart';
 import 'package:notekeeper/ui/screens/note_search_screen/note_search_view_model.dart';
 import 'package:provider/provider.dart';
@@ -20,9 +21,9 @@ class NoteSearchScreen extends StatelessWidget {
         child: ChangeNotifierProvider(
       create: (context) => noteSearchViewModel,
       child: Scaffold(
-        backgroundColor: color_list.appbackgroundColorDark,
+        backgroundColor: ColorList.appbackgroundColorDark,
         appBar: AppBar(
-          backgroundColor: color_list.containerColor,
+          backgroundColor: ColorList.containerColor,
           title: Container(
               child: Consumer<NoteSearchViewModel>(
                   builder: (context, model, child) => TextField(
@@ -30,10 +31,10 @@ class NoteSearchScreen extends StatelessWidget {
                         onChanged: (text) {
                           model.searchList(text);
                         },
-                        style: textstyle_list.whiteContentStyle,
+                        style: CustomTextStyle.whiteContentStyle,
                         cursorColor: Colors.blueGrey,
                         decoration: InputDecoration(
-                          hintStyle: textstyle_list.greyContentStyle,
+                          hintStyle: CustomTextStyle.greyContentStyle,
                           hintText: 'Search',
                           border: InputBorder.none,
                         ),
@@ -87,11 +88,11 @@ class NoteSearchScreen extends StatelessWidget {
                   children: [
                     Text(
                       "Labels",
-                      style: textstyle_list.whiteContentStyle,
+                      style: CustomTextStyle.whiteContentStyle,
                     ),
                     Text(
                       "See more",
-                      style: textstyle_list.whiteContentStyle,
+                      style: CustomTextStyle.whiteContentStyle,
                     )
                   ],
                 ),
@@ -112,7 +113,7 @@ class NoteSearchScreen extends StatelessWidget {
                           ),
                           Text(
                             "LabelName",
-                            style: textstyle_list.whiteContentStyle,
+                            style: CustomTextStyle.whiteContentStyle,
                           )
                         ],
                       ),
@@ -132,12 +133,12 @@ class NoteSearchScreen extends StatelessWidget {
               children: [
                 Text(
                   "Colors",
-                  style: textstyle_list.whiteContentStyle,
+                  style: CustomTextStyle.whiteContentStyle,
                 ),
                 Wrap(
                   children: [
                     for (int index = 0;
-                        index < color_list.kNoteColorsMap.length;
+                        index < ColorList.kNoteColorsMap.length;
                         index++)
                       GestureDetector(
                         child: GestureDetector(
@@ -150,8 +151,8 @@ class NoteSearchScreen extends StatelessWidget {
                               child: Container(
                                 height: 40,
                                 width: 40,
-                                color: color_list.kNoteColorsMap[
-                                    color_list.kNoteColors[index]],
+                                color: ColorList.kNoteColorsMap[
+                                    ColorList.kNoteColors[index]],
                               ),
                             ),
                           ),

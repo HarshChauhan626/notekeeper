@@ -4,7 +4,7 @@ import 'package:notekeeper/core/helper/notes_db_helper.dart';
 import 'package:notekeeper/core/models/note_model.dart';
 import 'package:notekeeper/core/service_locator.dart';
 import 'package:notekeeper/main.dart';
-import 'package:notekeeper/core/utils/colors_list.dart' as color_list;
+import 'package:notekeeper/core/utils/colors_list.dart';
 import 'package:flutter/material.dart';
 import 'package:notekeeper/ui/screens/add_edit_screen/edit_view_model.dart';
 import 'package:notekeeper/ui/screens/home_screen/home_view_model.dart';
@@ -46,19 +46,16 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
         create: (context) => editNoteViewModel,
         child: Consumer<EditNoteViewModel>(
           builder: (context, model, child) => Scaffold(
-            //backgroundColor: color_list.appbackgroundColorDark,
+            backgroundColor: model.noteColor,
             appBar: AppBar(
-              //backgroundColor: color_list.appbackgroundColorDark,
-              backgroundColor:
-                  Provider.of<EditNoteViewModel>(context, listen: true)
-                      .noteColor,
+              //backgroundColor: ColorList.appbackgroundColorDark,
+              backgroundColor:model.noteColor,
               title: Text(""),
               leading: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: Icon(Icons.arrow_back_ios),
                 onPressed: () async {
-                  Provider.of<EditNoteViewModel>(context)
-                      .funcSaveNote(widget.note.notesId);
-                  //dbHelper.updateNote(widget.note.notesId,_noteTitleEditingController.text, _noteDataEditingController.text,DateTime.now().millisecondsSinceEpoch,noteColorName,isPinned,isArchive,"none").whenComplete(() => Navigator.pop(context));
+                  model.funcSaveNote(this.widget.note.notesId);
+                  Navigator.pop(context);
                 },
               ),
               actions: [
@@ -100,17 +97,20 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                         style: TextStyle(fontSize: 30, color: Colors.white),
                         decoration: InputDecoration(
                           border: InputBorder.none,
+                          fillColor: model.noteColor,
+                          hoverColor: model.noteColor,
                           hintText: "Title",
                           hintStyle: TextStyle(color: Colors.grey),
-                          //fillColor: color_list.kNoteColorsMap[widget.note['noteColor']]
+                          //fillColor: ColorList.kNoteColorsMap[widget.note['noteColor']]
                         ),
                       ),
                     ),
                     Container(
                       height: 30,
                       alignment: Alignment.centerLeft,
-                      //color: color_list.kNoteColorsMap[widget.note['noteColor']],
+                      //color: ColorList.kNoteColorsMap[widget.note['noteColor']],
                       width: double.infinity,
+                      color: model.noteColor,
                       child: Text(
                         "Sun,10:24 | 4096 characters",
                         style: TextStyle(color: Colors.grey),
@@ -126,11 +126,11 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(0),
-                          focusColor: color_list.appbackgroundColorDark,
-                          hoverColor: color_list.appbackgroundColorDark,
+                          focusColor: model.noteColor,
+                          hoverColor: model.noteColor,
                           border: InputBorder.none,
                           filled: true,
-                          //fillColor: color_list.kNoteColorsMap[widget.note['noteColor']],
+                          //fillColor: ColorList.kNoteColorsMap[widget.note['noteColor']],
                           hintText: 'Take a note...',
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
@@ -162,7 +162,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                     onPressed: () => {
                       showModalBottomSheet(
                           context: context,
-                          backgroundColor: color_list.appbackgroundColorDark,
+                          backgroundColor: ColorList.appbackgroundColorDark,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                               top: Radius.circular(30),
@@ -175,7 +175,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                                 children: [
                                   Container(
                                       height: 40,
-                                      color: color_list.appbackgroundColorDark,
+                                      color: ColorList.appbackgroundColorDark,
                                       child: colorContainerList(model)),
                                   ListTile(
                                     leading: new Icon(
@@ -221,7 +221,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
   Widget colorContainerList(EditNoteViewModel model) {
     return ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: color_list.kNoteColors.length,
+        itemCount: ColorList.kNoteColors.length,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
@@ -235,7 +235,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                   height: 34,
                   width: 34,
                   color:
-                      color_list.kNoteColorsMap[color_list.kNoteColors[index]],
+                      ColorList.kNoteColorsMap[ColorList.kNoteColors[index]],
                 ),
               ),
             ),

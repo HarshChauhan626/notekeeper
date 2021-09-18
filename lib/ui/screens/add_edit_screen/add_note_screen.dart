@@ -3,12 +3,12 @@
 import 'package:notekeeper/core/helper/notes_db_helper.dart';
 import 'package:notekeeper/core/service_locator.dart';
 import 'package:notekeeper/main.dart';
-import 'package:notekeeper/core/utils/colors_list.dart' as color_list;
+import 'package:notekeeper/core/utils/colors_list.dart';
 import 'package:flutter/material.dart';
 import 'package:notekeeper/ui/screens/add_edit_screen/add_edit_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-import 'package:notekeeper/core/utils/textstyle_list.dart' as text_style;
+import 'package:notekeeper/core/utils/textstyle_list.dart';
 
 class AddNoteScreen extends StatefulWidget {
   AddNoteScreen({Key key});
@@ -17,8 +17,12 @@ class AddNoteScreen extends StatefulWidget {
   _AddNoteScreenState createState() => _AddNoteScreenState();
 }
 
-class _AddNoteScreenState extends State<AddNoteScreen> {
+class _AddNoteScreenState extends State<AddNoteScreen>
+    with SingleTickerProviderStateMixin {
   AddNoteViewModel addViewModel = serviceLocator.get<AddNoteViewModel>();
+  TabController tabController;
+
+  List<bool> isSelected = [false, false, false];
 
   var uuid;
   @override
@@ -27,12 +31,14 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     super.initState();
     uuid = Uuid();
     addViewModel.setUpEditingController();
+    tabController = TabController(initialIndex: 0, length: 5, vsync: this);
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     //addViewModel.dispose();
+    tabController.dispose();
     super.dispose();
   }
 
@@ -46,10 +52,10 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
             backgroundColor: model.noteColor,
             appBar: AppBar(
               backgroundColor: model.noteColor,
-              title: Text("${model.dataMaxLines}"),
+              //title: Text("${model.dataMaxLines}"),
               leading: IconButton(
                 icon: Icon(
-                  Icons.arrow_back,
+                  Icons.arrow_back_ios,
                   color: Colors.grey,
                 ),
                 onPressed: () {
@@ -87,7 +93,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                         vertical: 20.0, horizontal: 10),
                     child: Text(
                       "Save",
-                      style: text_style.greyContentStyle,
+                      style: CustomTextStyle.greyContentStyle,
                     ),
                   ),
                   onTap: () {
@@ -133,7 +139,12 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                       child: TextField(
                         controller: model.noteDataEditingController,
                         maxLines: null,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: Colors.white,
+                          fontWeight: isSelected[0]==true?FontWeight.bold:FontWeight.normal,
+                          fontStyle: isSelected[1]==true?FontStyle.italic:FontStyle.normal,
+                          
+                        ),
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(0),
                           focusColor: model.noteColor,
@@ -147,14 +158,14 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                       ),
                     ),
                     Container(
-                      color: Colors.red,
+                      //color: Colors.red,
                       height: 100,
                     )
                   ],
                 ),
               ),
             ),
-            bottomNavigationBar: Container(
+            /*bottomNavigationBar: Container(
               height: 80,
               color: model.noteColor,
               padding: const EdgeInsets.symmetric(horizontal: 9),
@@ -176,7 +187,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                     onPressed: () => {
                       showModalBottomSheet(
                           context: context,
-                          backgroundColor: color_list.appbackgroundColorDark,
+                          backgroundColor: ColorList.appbackgroundColorDark,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                               top: Radius.circular(30),
@@ -189,7 +200,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                                 children: [
                                   Container(
                                       height: 40,
-                                      color: color_list.appbackgroundColorDark,
+                                      color: ColorList.appbackgroundColorDark,
                                       child: colorContainerList(model)),
                                   ListTile(
                                     leading: new Icon(
@@ -225,6 +236,190 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                   ),
                 ],
               ),
+            ),*/
+            bottomNavigationBar: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: ColorList.containerColor,
+                    //color: Colors.white,
+                    borderRadius: BorderRadius.circular(
+                        MediaQuery.of(context).size.width / 20)),
+                height: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                              context: context,
+                              backgroundColor:
+                                  ColorList.appbackgroundColorDark,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(30),
+                                ),
+                              ),
+                              builder: (context) {
+                                return StatefulBuilder(
+                                  builder: (BuildContext context,StateSetter setState){
+                                    return Container(
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              ToggleButtons(
+                                                children: <Widget>[
+                                                  Icon(Icons.format_bold,color: Colors.white,),
+                                                  Icon(Icons.format_italic,color: Colors.white,),
+                                                  Icon(Icons.link,color: Colors.white,),
+                                                ],
+                                                isSelected: isSelected,
+                                                onPressed: (int index) {
+                                                  setState(() {
+                                                    isSelected[index] =
+                                                    !isSelected[index];
+                                                  });
+                                                },
+                                                selectedColor: Colors.blue,
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              });
+                        },
+                        icon: Icon(
+                          Icons.font_download_outlined,
+                          color: Colors.white,
+                        )),
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.wallpaper,
+                        color: Colors.white,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        {
+                          showModalBottomSheet(
+                              context: context,
+                              backgroundColor:
+                                  ColorList.appbackgroundColorDark,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(30),
+                                ),
+                              ),
+                              builder: (context) {
+                                return Container(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(
+                                        height: 50,
+                                        color: Colors.black,
+                                        child: TabBar(
+                                          isScrollable: true,
+                                          controller: tabController,
+                                          tabs: [
+                                            Text(
+                                              "Simple",
+                                              style: CustomTextStyle
+                                                  .whiteContentStyle,
+                                            ),
+                                            Text(
+                                              "Simple",
+                                              style: CustomTextStyle
+                                                  .whiteContentStyle,
+                                            ),
+                                            Text(
+                                              "Simple",
+                                              style: CustomTextStyle
+                                                  .whiteContentStyle,
+                                            ),
+                                            Text(
+                                              "Simple",
+                                              style: CustomTextStyle
+                                                  .whiteContentStyle,
+                                            ),
+                                            Text(
+                                              "Simple",
+                                              style: CustomTextStyle
+                                                  .whiteContentStyle,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 300,
+                                        child: TabBarView(
+                                            controller: tabController,
+                                            children: [
+                                              Container(
+                                                  height: 300,
+                                                  color: ColorList
+                                                      .appbackgroundColorDark,
+                                                  child: colorContainerList(
+                                                      model)),
+                                              Container(
+                                                  height: 300,
+                                                  color: ColorList
+                                                      .appbackgroundColorDark,
+                                                  child: colorContainerList(
+                                                      model)),
+                                              Container(
+                                                  height: 300,
+                                                  color: ColorList
+                                                      .appbackgroundColorDark,
+                                                  child: colorContainerList(
+                                                      model)),
+                                              Container(
+                                                  height: 300,
+                                                  color: ColorList
+                                                      .appbackgroundColorDark,
+                                                  child: colorContainerList(
+                                                      model)),
+                                              Container(
+                                                  height: 300,
+                                                  color: ColorList
+                                                      .appbackgroundColorDark,
+                                                  child: colorContainerList(
+                                                      model)),
+                                            ]),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              });
+                        }
+                      },
+                      icon: Icon(
+                        Icons.wallpaper,
+                        color: Colors.white,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.wallpaper,
+                        color: Colors.white,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.wallpaper,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -233,23 +428,25 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   }
 
   Widget colorContainerList(AddNoteViewModel model) {
-    return ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: color_list.kNoteColors.length,
+    return GridView.builder(
+        gridDelegate:
+            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+        scrollDirection: Axis.vertical,
+        itemCount: ColorList.kNoteColors.length,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
               model.changeNoteColor(index);
             },
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(34),
+                borderRadius: BorderRadius.circular(10),
                 child: Container(
-                  height: 34,
-                  width: 34,
+                  height: 20,
+                  width: 20,
                   color:
-                      color_list.kNoteColorsMap[color_list.kNoteColors[index]],
+                      ColorList.kNoteColorsMap[ColorList.kNoteColors[index]],
                 ),
               ),
             ),
