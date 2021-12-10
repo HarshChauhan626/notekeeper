@@ -5,6 +5,8 @@ class ColorList{
 
   static Color appbackgroundColorDark=const Color(0xff0e121a);
   static Color containerColor=const Color(0xff171c26);
+  // static const Color appbackgroundColorDark=Colors.white;
+  // static Color containerColor=const Color(0xfff1f5f9);
 
 
 
@@ -25,4 +27,6 @@ class ColorList{
 
 
   static List<String> kNoteColors=kNoteColorsMap.keys.toList();
+
+  static const Color tertiaryColor=Colors.white;
 }

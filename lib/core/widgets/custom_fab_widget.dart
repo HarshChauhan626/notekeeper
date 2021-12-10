@@ -5,6 +5,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:notekeeper/core/utils/colors_list.dart';
 import 'package:notekeeper/ui/screens/add_edit_screen/add_note_screen.dart';
 
 const double fabSize = 60;
@@ -37,7 +38,7 @@ class CustomFABWidget extends StatelessWidget {
           width: fabSize,
           child: Icon(
             Icons.add,
-            color: Colors.white,
+            color: ColorList.tertiaryColor,
             size: 40,
           ),
         ),

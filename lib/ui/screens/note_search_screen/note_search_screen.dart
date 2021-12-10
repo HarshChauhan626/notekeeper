@@ -109,7 +109,7 @@ class NoteSearchScreen extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.label,
-                            color: Colors.white,
+                            color: ColorList.tertiaryColor,
                           ),
                           Text(
                             "LabelName",

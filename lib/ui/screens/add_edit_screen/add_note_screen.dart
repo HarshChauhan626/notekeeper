@@ -114,7 +114,7 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                       child: TextField(
                         controller: model.noteTitleEditingController,
                         maxLines: 2,
-                        style: TextStyle(fontSize: 30, color: Colors.white),
+                        style: TextStyle(fontSize: 30, color: ColorList.tertiaryColor),
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Title",
@@ -140,7 +140,7 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                         controller: model.noteDataEditingController,
                         maxLines: null,
                         style: TextStyle(
-                            color: Colors.white,
+                            color: ColorList.tertiaryColor,
                           fontWeight: isSelected[0]==true?FontWeight.bold:FontWeight.normal,
                           fontStyle: isSelected[1]==true?FontStyle.italic:FontStyle.normal,
                           
@@ -165,84 +165,12 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                 ),
               ),
             ),
-            /*bottomNavigationBar: Container(
-              height: 80,
-              color: model.noteColor,
-              padding: const EdgeInsets.symmetric(horizontal: 9),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                    icon: const Icon(Icons.add_box),
-                    color: Colors.grey,
-                    onPressed: () => {},
-                  ),
-                  Text(
-                    'Edited at ',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.more_vert),
-                    color: Colors.grey,
-                    onPressed: () => {
-                      showModalBottomSheet(
-                          context: context,
-                          backgroundColor: ColorList.appbackgroundColorDark,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(30),
-                            ),
-                          ),
-                          builder: (context) {
-                            return Container(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                      height: 40,
-                                      color: ColorList.appbackgroundColorDark,
-                                      child: colorContainerList(model)),
-                                  ListTile(
-                                    leading: new Icon(
-                                      Icons.photo,
-                                      color: Colors.white,
-                                    ),
-                                    title: new Text(
-                                      'Photo',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                  ListTile(
-                                    leading: new Icon(
-                                      Icons.music_note,
-                                      color: Colors.white,
-                                    ),
-                                    title: new Text(
-                                      'Music',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            );
-                          })
-                    },
-                  ),
-                ],
-              ),
-            ),*/
             bottomNavigationBar: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Container(
                 decoration: BoxDecoration(
                     color: ColorList.containerColor,
-                    //color: Colors.white,
+                    //color: ColorList.tertiaryColor,
                     borderRadius: BorderRadius.circular(
                         MediaQuery.of(context).size.width / 20)),
                 height: 50,
@@ -255,34 +183,44 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                               context: context,
                               backgroundColor:
                                   ColorList.appbackgroundColorDark,
-                              shape: RoundedRectangleBorder(
+                              /*shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.vertical(
                                   top: Radius.circular(30),
                                 ),
-                              ),
+                              ),*/
                               builder: (context) {
                                 return StatefulBuilder(
                                   builder: (BuildContext context,StateSetter setState){
                                     return Container(
                                       child: Column(
                                         children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                ToggleButtons(
+                                                  children: <Widget>[
+                                                    Icon(Icons.format_bold,color: ColorList.tertiaryColor,),
+                                                    Icon(Icons.format_italic,color: ColorList.tertiaryColor,),
+                                                    Icon(Icons.link,color: ColorList.tertiaryColor,),
+                                                  ],
+                                                  isSelected: isSelected,
+                                                  onPressed: (int index) {
+                                                    setState(() {
+                                                      isSelected[index] =
+                                                      !isSelected[index];
+                                                    });
+                                                  },
+                                                  selectedColor: Colors.blue,
+                                                )
+                                              ],
+                                            ),
+                                          ),
                                           Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
                                             children: [
-                                              ToggleButtons(
-                                                children: <Widget>[
-                                                  Icon(Icons.format_bold,color: Colors.white,),
-                                                  Icon(Icons.format_italic,color: Colors.white,),
-                                                  Icon(Icons.link,color: Colors.white,),
-                                                ],
-                                                isSelected: isSelected,
-                                                onPressed: (int index) {
-                                                  setState(() {
-                                                    isSelected[index] =
-                                                    !isSelected[index];
-                                                  });
-                                                },
-                                                selectedColor: Colors.blue,
-                                              )
+
                                             ],
                                           )
                                         ],
@@ -294,13 +232,13 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                         },
                         icon: Icon(
                           Icons.font_download_outlined,
-                          color: Colors.white,
+                          color: ColorList.tertiaryColor,
                         )),
                     IconButton(
                       onPressed: () {},
                       icon: Icon(
                         Icons.wallpaper,
-                        color: Colors.white,
+                        color: ColorList.tertiaryColor,
                       ),
                     ),
                     IconButton(
@@ -400,21 +338,21 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                       },
                       icon: Icon(
                         Icons.wallpaper,
-                        color: Colors.white,
+                        color: ColorList.tertiaryColor,
                       ),
                     ),
                     IconButton(
                       onPressed: () {},
                       icon: Icon(
                         Icons.wallpaper,
-                        color: Colors.white,
+                        color: ColorList.tertiaryColor,
                       ),
                     ),
                     IconButton(
                       onPressed: () {},
                       icon: Icon(
                         Icons.wallpaper,
-                        color: Colors.white,
+                        color: ColorList.tertiaryColor,
                       ),
                     ),
                   ],
@@ -453,4 +391,16 @@ class _AddNoteScreenState extends State<AddNoteScreen>
           );
         });
   }
+
+  Widget fontSizeSelectorButton(int index){
+    return Container(
+      height: 50,
+      width:50,
+      child: Center(
+        child: Text(""),
+      ),
+    );
+  }
+
+
 }

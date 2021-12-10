@@ -94,7 +94,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                       child: TextField(
                         controller: model.noteTitleEditingController,
                         maxLines: 2,
-                        style: TextStyle(fontSize: 30, color: Colors.white),
+                        style: TextStyle(fontSize: 30, color: ColorList.tertiaryColor),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           fillColor: model.noteColor,
@@ -123,7 +123,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                       child: TextField(
                         controller: model.noteDataEditingController,
                         maxLines: null,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: ColorList.tertiaryColor),
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(0),
                           focusColor: model.noteColor,
@@ -154,7 +154,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                   ),
                   Text(
                     'Edited at ',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: ColorList.tertiaryColor),
                   ),
                   IconButton(
                     icon: const Icon(Icons.more_vert),
@@ -180,11 +180,11 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                                   ListTile(
                                     leading: new Icon(
                                       Icons.photo,
-                                      color: Colors.white,
+                                      color: ColorList.tertiaryColor,
                                     ),
                                     title: new Text(
                                       'Photo',
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(color: ColorList.tertiaryColor),
                                     ),
                                     onTap: () {
                                       Navigator.pop(context);
@@ -193,11 +193,11 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                                   ListTile(
                                     leading: new Icon(
                                       Icons.music_note,
-                                      color: Colors.white,
+                                      color: ColorList.tertiaryColor,
                                     ),
                                     title: new Text(
                                       'Music',
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(color: ColorList.tertiaryColor),
                                     ),
                                     onTap: () {
                                       Navigator.pop(context);

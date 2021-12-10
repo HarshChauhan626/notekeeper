@@ -113,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
       width: MediaQuery.of(context).size.width - 30,
       decoration: BoxDecoration(
           color: ColorList.containerColor,
-          //color: Colors.white,
+          //color: ColorList.tertiaryColor,
           borderRadius:
               BorderRadius.circular(MediaQuery.of(context).size.width / 12)),
       child: Row(
@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: InkWell(
               child: SvgPicture.asset(
                 'assets/custom_drawer_icon.svg',
-                color: Colors.white,
+                color: ColorList.tertiaryColor,
               ),
               onTap: () {
                 scaffoldKey.currentState.openDrawer();
@@ -163,11 +163,11 @@ class _HomeScreenState extends State<HomeScreen> {
               child: homeViewModel.isGrid
                   ? SvgPicture.asset(
                       'assets/grid_list_icon.svg',
-                      color: Colors.white,
+                      color: ColorList.tertiaryColor,
                     )
                   : SvgPicture.asset(
                       'assets/list_view_icon.svg',
-                      color: Colors.white,
+                      color: ColorList.tertiaryColor,
                     ),
               onTap: () {
                 homeViewModel.toggleGrid();
@@ -181,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: PopupMenuButton<String>(
               icon: Icon(
                 Icons.sort,
-                color: Colors.white,
+                color: ColorList.tertiaryColor,
               ),
               color: ColorList.containerColor,
               onSelected: (String choice) {
@@ -226,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: MediaQuery.of(context).size.width - 30,
               decoration: BoxDecoration(
                   color: ColorList.containerColor,
-                  //color: Colors.white,
+                  //color: ColorList.tertiaryColor,
                   borderRadius: BorderRadius.circular(
                       MediaQuery.of(context).size.width / 12)),
               child: Row(
@@ -241,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: InkWell(
                         child: SvgPicture.asset(
                           'assets/custom_drawer_icon.svg',
-                          color: Colors.white,
+                          color: ColorList.tertiaryColor,
                         ),
                         onTap: () {
                           scaffoldKey.currentState.openDrawer();
@@ -262,13 +262,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: homeViewModel.isGrid
                             ? SvgPicture.asset(
                                 'assets/grid_list_icon.svg',
-                                color: Colors.white,
+                                color: ColorList.tertiaryColor,
                           height: 20,
                               )
                             : SvgPicture.asset(
                                 'assets/list_view_icon.svg',
                                 height: 20,
-                                color: Colors.white,
+                                color: ColorList.tertiaryColor,
                               ),
                         onTap: () async {
                           homeViewModel.toggleGrid();
@@ -284,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       icon: Icon(
                         Icons.sort,
                         size: 25,
-                        color: Colors.white,
+                        color: ColorList.tertiaryColor,
                       ),
                       color: ColorList.containerColor,
                       onSelected: (String choice) {
